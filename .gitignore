@@ -1,0 +1,8 @@
+# node_modules directory
+node_modules/
+
+# package-lock.json file
+package-lock.json
+
+# npmignore file
+.npmignore

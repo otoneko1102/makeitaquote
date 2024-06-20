@@ -1,0 +1,31 @@
+{
+  "name": "makeitaquote",
+  "version": "1.0.0",
+  "description": "Generate a quote.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/otoneko1102/makeitaquote.git"
+  },
+  "keywords": [
+    "image",
+    "gen",
+    "miq",
+    "makeitaquote",
+    "quote",
+    "generate"
+  ],
+  "author": "otoneko.",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/otoneko1102/makeitaquote/issues"
+  },
+  "homepage": "https://github.com/otoneko1102/makeitaquote#readme",
+  "dependencies": {
+    "axios": "^1.7.2",
+    "displus": "^1.2.2"
+  }
+}
