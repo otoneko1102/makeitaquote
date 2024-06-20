@@ -11,12 +11,15 @@
     "url": "git+https://github.com/otoneko1102/makeitaquote.git"
   },
   "keywords": [
+    "img",
     "image",
     "gen",
+    "generate",
     "miq",
     "makeitaquote",
     "quote",
-    "generate"
+    "discord",
+    "api"
   ],
   "author": "otoneko.",
   "license": "ISC",
