@@ -4,7 +4,8 @@ A quote image generator for Discord.<br>
 Powered by [Voids API](https://voids.top/).
 
 ## Example
-Code: [example.js](https://github.com/otoneko1102/makeitaquote/tree/main/examples/example.js)
+Code: [miq.js](https://github.com/otoneko1102/makeitaquote/tree/main/examples/miq.js)<br>
+With discord.js: [with-discordjs.md](https://github.com/otoneko1102/makeitaquote/tree/main/examples/with-discordjs.md)
 ![MiQ](https://cdn.otoneko.jp/makeitaquote/MiQ.png)
 ![MiQ Color](https://cdn.otoneko.jp/makeitaquote/MiQ-color.png)
 

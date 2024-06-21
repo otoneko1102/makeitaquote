@@ -7,7 +7,9 @@ const displus = require('displus');
  */
 
 class MiQ {
-  constructor() {
+  constructor(client = null, guild = null) {
+    this.client = client;
+    this.guild = guild;
     this.format = {
       text: '',
       avatar: null,
@@ -19,22 +21,46 @@ class MiQ {
   }
 
   /**
+   * @function setFromMessage
+   * @description Sets the quote properties based on a Discord message object.
+   * @param {Object} message - The Discord message object.
+   * @param {boolean} [formatText=false] - Whether to format the text by removing markdown.
+   * @param {boolean} [replaceMentions=false] - Whether to format the text by replacing mentions.
+   * @returns {MiQ} Returns the instance of MiQ for chaining.
+   */
+
+  setFromMessage(message, formatText = false, replaceMentions = false) {
+    this.setText(message.content, formatText, replaceMentions);
+    this.setAvatar(message.member ? message.author.displayAvatarURL() : message.author.displayAvatarURL());
+    this.setUsername(message.author.username);
+    this.setDisplayname(message.member ? message.member.displayName : message.author.username);
+    return this;
+  }
+
+  /**
    * @function setText
    * @description Sets the text of the quote. Optionally formats the text to remove markdown.
    * @param {string} text - The text to be set.
    * @param {boolean} [formatText=false] - Whether to format the text by removing markdown.
+   * @param {boolean} [replaceMentions=false] - Whether to format the text by replacing mentions.
    * @throws {TypeError} Throws an error if text is not a string or formatText is not a boolean.
    * @returns {MiQ} Returns the instance of MiQ for chaining.
    */
 
-  setText(text, formatText = false) {
+  async setText(text, formatText = false, replaceMentions = false) {
+    let t = text;
     if (typeof text !== 'string') {
       throw new TypeError('Text must be string');
     }
     if (typeof formatText !== 'boolean') {
       throw new TypeError('formatText must be boolean');
     }
-    this.format.text = formatText ? displus.removeMarkdown(text) : text;
+    if (typeof replaceMentions !== 'boolean') {
+      throw new TypeError('replaceMentions must be boolean');
+    }
+    if (formatText) t = displus.removeMarkdown(t);
+    if (replaceMentions) t = await displus.replaceMentions(this.client, this.guild, t);
+    this.format.text = t;
     return this;
   }
 
@@ -75,7 +101,7 @@ class MiQ {
    * @description Sets the display name of the quote.
    * @param {string} display_name - The display name to be set.
    * @throws {TypeError} Throws an error if display_name is not a string.
-   * @ret
+   * @returns {MiQ} Returns the instance of MiQ for chaining.
    */
 
   setDisplayname(display_name) {
