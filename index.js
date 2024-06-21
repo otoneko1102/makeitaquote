@@ -37,6 +37,24 @@ class MiQ {
   }
 
   /**
+   * @function setFromObject
+   * @description Sets the quote properties based on an object.
+   * @param {Object} data - The object containing quote properties.
+   * @param {boolean} [formatText=false] - Whether to format the text by removing markdown.
+   * @returns {MiQ} Returns the instance of MiQ for chaining.
+   */
+
+  setFromObject(data, formatText = false) {
+    if (data.text) this.setText(data.text, formatText);
+    if (data.avatar) this.setAvatar(data.avatar);
+    if (data.username) this.setUsername(data.username);
+    if (data.display_name) this.setDisplayname(data.display_name);
+    if (typeof data.color === 'boolean') this.setColor(data.color);
+    if (data.watermark) this.setWatermark(data.watermark);
+    return this;
+  }
+
+  /**
    * @function setText
    * @description Sets the text of the quote. Optionally formats the text to remove markdown.
    * @param {string} text - The text to be set.
