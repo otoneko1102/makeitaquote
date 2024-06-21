@@ -159,24 +159,33 @@ class MiQ {
   /**
    * @function generate
    * @description Generates the quote by sending a request to the external API.
-   * @param {boolean} [returnRawData=false] - Whether to return raw data (array buffer) instead of the URL.
+   * @param {boolean} [returnRawImage=false] - Whether to return raw image instead of the URL.
    * @throws {Error} Throws an error if text is not set or if an API request fails.
    * @returns {Promise<string|ArrayBuffer>} Returns the URL of the generated quote or the raw data.
    */
 
-  async generate(returnRawData = false) {
+  async generate(returnRawImage = false) {
     if (!this.format.text) {
       throw new Error('Text is required');
     }
-    if (typeof returnRawData !== 'boolean') {
-      throw new TypeError('returnRawData must be boolean');
+    if (typeof returnRawImage !== 'boolean') {
+      throw new TypeError('returnRawImage must be boolean');
     }
 
     try {
-      const response = await axios.post('https://api.voids.top/fakequote', this.format, {
-        responseType: returnRawData ? 'arraybuffer' : 'json'
-      });
-      return returnRawData ? response.data : response.data.url;
+      if (returnRawImage) {
+        const response = (
+          await axios.post('https://api.voids.top/fakequote', this.format)
+        ).data;
+        const imageBuffer = await axios.get(response.url, { responseType: 'arraybuffer' });
+        const image = Buffer.from(imageBuffer.data, 'binary');
+        return image;
+      } else {
+        const response = await axios.post('https://api.voids.top/fakequote', this.format, {
+          responseType: 'json'
+        });
+        return response.data.url;
+      }
     } catch (error) {
       if (error.response) {
         throw new Error(`Failed to generate quote: ${error.message}, Status: ${error.response.status}, Data: ${JSON.stringify(error.response.data)}`);
