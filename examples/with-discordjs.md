@@ -8,7 +8,7 @@ const { MiQ } = require('makeitaquote');
 client.on('messageCreate', async message => {
   if (message.content === '!miq') {
     const replied = await message.channel.messages.fetch(message.reference.messageId);
-    const miq = new MiQ(client, message.guild)
+    const miq = new MiQ()
       .setFromMessage(replied);
 
     const response = await miq.generate();
@@ -20,7 +20,7 @@ client.on('messageCreate', async message => {
 client.on('messageCreate', async message => {
   if (message.content === '!miq') {
     const replied = await message.channel.messages.fetch(message.reference.messageId);
-    const miq = new MiQ(client, message.guild)
+    const miq = new MiQ()
       .setFromMessage(replied)
       .setColor(true);
 

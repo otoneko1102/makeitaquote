@@ -34,7 +34,7 @@ async function main() {
       .setDisplayname('音猫｡')
       .setColor(false)
       .setWatermark('Make it a Quote#6666')
-      .generate();
+      .generate(true);
     
     console.log('Raw Data:', rawData);
 
@@ -46,7 +46,7 @@ async function main() {
       .setDisplayname('音猫｡')
       .setColor(false)
       .setWatermark('Make it a Quote#6666')
-      .generate();
+      .generate(true);
     
     console.log('Raw Data Color:', rawDataColor);
   } catch (error) {
