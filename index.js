@@ -1,11 +1,12 @@
 const axios = require('axios');
 const displus = require('displus');
 
+const API_URL = "https://api.voids.top/fakequote";
+
 /**
  * @class MiQ
  * @description The MiQ class is designed to create a quote with customizable properties such as text, avatar, username, display name, color, and watermark. It also provides a method to generate a quote image or data from an external API.
  */
-
 class MiQ {
   constructor(client = null, guild = null) {
     this.client = client;
@@ -27,7 +28,6 @@ class MiQ {
    * @param {boolean} [formatText=false] - Whether to format the text by removing markdown.
    * @returns {MiQ} Returns the instance of MiQ for chaining.
    */
-
   setFromMessage(message, formatText = false) {
     this.setText(message.content, formatText);
     this.setAvatar(message.member ? message.member.displayAvatarURL() : message.author.displayAvatarURL());
@@ -43,7 +43,6 @@ class MiQ {
    * @param {boolean} [formatText=false] - Whether to format the text by removing markdown.
    * @returns {MiQ} Returns the instance of MiQ for chaining.
    */
-
   setFromObject(data, formatText = false) {
     if (data.text) this.setText(data.text, formatText);
     if (data.avatar) this.setAvatar(data.avatar);
@@ -62,7 +61,6 @@ class MiQ {
    * @throws {TypeError} Throws an error if text is not a string or formatText is not a boolean.
    * @returns {MiQ} Returns the instance of MiQ for chaining.
    */
-
   setText(text, formatText = false) {
     let t = text;
     if (typeof text !== 'string') {
@@ -83,7 +81,6 @@ class MiQ {
    * @throws {TypeError} Throws an error if avatar is not a string or null.
    * @returns {MiQ} Returns the instance of MiQ for chaining.
    */
-
   setAvatar(avatar) {
     if (avatar !== null && typeof avatar !== 'string') {
       throw new TypeError('Avatar must be string or null');
@@ -99,7 +96,6 @@ class MiQ {
    * @throws {TypeError} Throws an error if username is not a string.
    * @returns {MiQ} Returns the instance of MiQ for chaining.
    */
-
   setUsername(username) {
     if (typeof username !== 'string') {
       throw new TypeError('Username must be string');
@@ -115,7 +111,6 @@ class MiQ {
    * @throws {TypeError} Throws an error if display_name is not a string.
    * @returns {MiQ} Returns the instance of MiQ for chaining.
    */
-
   setDisplayname(display_name) {
     if (typeof display_name !== 'string') {
       throw new TypeError('Display name must be string');
@@ -131,7 +126,6 @@ class MiQ {
    * @throws {TypeError} Throws an error if color is not a boolean.
    * @returns {MiQ} Returns the instance of MiQ for chaining.
    */
-
   setColor(color = false) {
     if (typeof color !== 'boolean') {
       throw new TypeError('Color must be boolean');
@@ -147,7 +141,6 @@ class MiQ {
    * @throws {TypeError} Throws an error if watermark is not a string.
    * @returns {MiQ} Returns the instance of MiQ for chaining.
    */
-
   setWatermark(watermark) {
     if (typeof watermark !== 'string') {
       throw new TypeError('Watermark must be string');
@@ -163,7 +156,6 @@ class MiQ {
    * @throws {Error} Throws an error if text is not set or if an API request fails.
    * @returns {Promise<string|ArrayBuffer>} Returns the URL of the generated quote or the raw data.
    */
-
   async generate(returnRawImage = false) {
     if (!this.format.text) {
       throw new Error('Text is required');
@@ -174,16 +166,12 @@ class MiQ {
 
     try {
       if (returnRawImage) {
-        const response = (
-          await axios.post('https://api.voids.top/fakequote', this.format)
-        ).data;
+        const response = (await axios.post(API_URL, this.format)).data;
         const imageBuffer = await axios.get(response.url, { responseType: 'arraybuffer' });
         const image = Buffer.from(imageBuffer.data, 'binary');
         return image;
       } else {
-        const response = await axios.post('https://api.voids.top/fakequote', this.format, {
-          responseType: 'json'
-        });
+        const response = await axios.post(API_URL, this.format, { responseType: 'json' });
         return response.data.url;
       }
     } catch (error) {
@@ -202,7 +190,6 @@ class MiQ {
    * @description Returns the current format settings of the quote.
    * @returns {Object} Returns the current format settings.
    */
-  
   getFormat() {
     return this.format;
   }
