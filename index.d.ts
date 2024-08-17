@@ -1,6 +1,4 @@
 declare module 'makeitaquote' {
-  import { Client, Guild, Message } from 'discord.js';
-
   interface Format {
     text: string;
     avatar: string | null;
@@ -11,9 +9,9 @@ declare module 'makeitaquote' {
   }
 
   class MiQ {
-    constructor(client?: Client | null, guild?: Guild | null);
+    constructor(client?: any, guild?: any);
 
-    setFromMessage(message: Message, formatText?: boolean): MiQ;
+    setFromMessage(message: any, formatText?: boolean): MiQ;
     setFromObject(data: Partial<Format>, formatText?: boolean): MiQ;
     setText(text: string, formatText?: boolean): MiQ;
     setAvatar(avatar: string | null): MiQ;
@@ -24,4 +22,6 @@ declare module 'makeitaquote' {
     generate(returnRawImage?: boolean): Promise<string | Buffer>;
     getFormat(): Format;
   }
+
+  export { MiQ, Format };
 }
