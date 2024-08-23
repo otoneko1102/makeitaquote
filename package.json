@@ -1,6 +1,6 @@
 {
   "name": "makeitaquote",
-  "version": "7.0.1",
+  "version": "7.0.2",
   "description": "Generate a quote.",
   "main": "index.js",
   "types": "index.d.ts",
