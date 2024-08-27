@@ -1,6 +1,6 @@
 {
   "name": "makeitaquote",
-  "version": "7.0.2",
+  "version": "7.0.3",
   "description": "Generate a quote.",
   "main": "index.js",
   "types": "index.d.ts",
@@ -29,8 +29,8 @@
   },
   "homepage": "https://github.com/otoneko1102/makeitaquote#readme",
   "dependencies": {
-    "axios": "^1.7.2",
-    "displus": "^2.0.1"
+    "axios": "^1.7.5",
+    "displus": "^2.0.2"
   },
   "devDependencies": {
     "@types/node": "^20.14.11"
