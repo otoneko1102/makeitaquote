@@ -1,8 +1,4 @@
-# node_modules directory
-node_modules/
-
-# package-lock.json file
+node_modules
+tests
 package-lock.json
-
-# npmignore file
 .npmignore

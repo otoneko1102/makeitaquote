@@ -1,23 +1,19 @@
 const axios = require('axios');
 const displus = require('displus');
 
-const API_URL = "https://api.voids.top/fakequote";
-
 /**
  * @class MiQ
  * @description The MiQ class is designed to create a quote with customizable properties such as text, avatar, username, display name, color, and watermark. It also provides a method to generate a quote image or data from an external API.
  */
 class MiQ {
-  constructor(client = null, guild = null) {
-    this.client = client;
-    this.guild = guild;
+  constructor() {
     this.format = {
       text: '',
       avatar: null,
       username: '',
       display_name: '',
       color: false,
-      watermark: '',
+      watermark: ''
     };
   }
 
@@ -31,8 +27,8 @@ class MiQ {
   setFromMessage(message, formatText = false) {
     this.setText(message.content, formatText);
     this.setAvatar(message.member ? message.member.displayAvatarURL() : message.author.displayAvatarURL());
-    this.setUsername(message.author.username);
-    this.setDisplayname(message.member ? message.member.displayName : message.author.username);
+    this.setUsername((!message.author?.discriminator || message.author?.discriminator === '0') ? message.author.username : `${message.author.username}#${message.author.discriminator}`);
+    this.setDisplayname(message.member ? message.member.displayName : (message.author?.global_name ?? message.author.username));
     return this;
   }
 
@@ -154,7 +150,7 @@ class MiQ {
    * @description Generates the quote by sending a request to the external API.
    * @param {boolean} [returnRawImage=false] - Whether to return raw image instead of the URL.
    * @throws {Error} Throws an error if text is not set or if an API request fails.
-   * @returns {Promise<string|ArrayBuffer>} Returns the URL of the generated quote or the raw data.
+   * @returns {Promise<string|Buffer>} Returns the URL of the generated quote or the raw data.
    */
   async generate(returnRawImage = false) {
     if (!this.format.text) {
@@ -163,6 +159,8 @@ class MiQ {
     if (typeof returnRawImage !== 'boolean') {
       throw new TypeError('returnRawImage must be boolean');
     }
+
+    const API_URL = "https://api.voids.top/fakequote";
 
     try {
       if (returnRawImage) {
@@ -174,6 +172,34 @@ class MiQ {
         const response = await axios.post(API_URL, this.format, { responseType: 'json' });
         return response.data.url;
       }
+    } catch (error) {
+      if (error.response) {
+        throw new Error(`Failed to generate quote: ${error.message}, Status: ${error.response.status}, Data: ${JSON.stringify(error.response.data)}`);
+      } else if (error.request) {
+        throw new Error(`Failed to generate quote: No response received, ${error.message}`);
+      } else {
+        throw new Error(`Failed to generate quote: ${error.message}`);
+      }
+    }
+  }
+
+  /**
+   * @function generateBeta
+   * @description Generates the quote by sending a request to the external API.
+   * @throws {Error} Throws an error if text is not set or if an API request fails.
+   * @returns {Promise<Buffer>} Returns the raw data.
+   */
+  async generateBeta() {
+    if (!this.format.text) {
+      throw new Error('Text is required');
+    }
+
+    const API_URL = "https://api.voids.top/fakequotebeta";
+
+    try {
+      const response = (await axios.post(API_URL, this.format, { responseType: 'arraybuffer' })).data;
+      const image = Buffer.from(response);
+      return image;
     } catch (error) {
       if (error.response) {
         throw new Error(`Failed to generate quote: ${error.message}, Status: ${error.response.status}, Data: ${JSON.stringify(error.response.data)}`);
