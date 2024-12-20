@@ -1,6 +1,6 @@
 # Example for discord.js@13
 ```js
-const { Client } = require('discord.js');
+const { Client, MessageAttachment } = require('discord.js');
 const client = new Client({ intents: [/* Required intents */] });
 const { MiQ } = require('makeitaquote');
 
